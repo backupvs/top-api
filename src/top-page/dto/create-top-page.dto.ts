@@ -1,12 +1,6 @@
-export enum TopLevelCategory {
-  Courses,
-  Services,
-  Books,
-  Products
-}
+import { TopLevelCategory } from '../top-page.model';
 
-export class TopPageModel {
-  _id: string;
+export class CreateTopPageDto {
   firstCategory: TopLevelCategory;
   secondCategory: string;
   title: string;
