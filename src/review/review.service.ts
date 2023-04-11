@@ -8,8 +8,7 @@ import { Types } from 'mongoose';
 @Injectable()
 export class ReviewService {
   constructor(
-    @InjectModel(ReviewModel)
-    private readonly reviewModel: ReturnModelType<typeof ReviewModel>
+    @InjectModel(ReviewModel) private readonly reviewModel: ReturnModelType<typeof ReviewModel>
   ) {}
 
   create(createReviewDto: CreateReviewDto): Promise<DocumentType<ReviewModel>> {

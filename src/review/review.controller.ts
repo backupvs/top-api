@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewService } from './review.service';
 import { REVIEW_NOT_FOUND } from './review.constants';
@@ -9,6 +9,7 @@ export class ReviewController {
     private readonly reviewService: ReviewService
   ) {}
 
+  @UsePipes(new ValidationPipe())
   @Post()
   create(@Body() createReviewDto: CreateReviewDto) {
     return this.reviewService.create(createReviewDto);
@@ -19,7 +20,7 @@ export class ReviewController {
     const deletedDoc = await this.reviewService.delete(id);
 
     if (!deletedDoc) {
-      throw new HttpException(REVIEW_NOT_FOUND, HttpStatus.NOT_FOUND);
+      throw new NotFoundException(REVIEW_NOT_FOUND);
     }
   }
 
