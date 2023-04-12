@@ -1,5 +1,5 @@
 import { prop } from "@typegoose/typegoose";
-import { Base, TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
+import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 
 export enum TopLevelCategory {
   Courses,
@@ -16,7 +16,6 @@ export class TopPageAdvantage {
   description: string;
 }
 
-export interface TopPageModel extends Base {}
 export class TopPageModel extends TimeStamps {
   @prop({
     enum: TopLevelCategory

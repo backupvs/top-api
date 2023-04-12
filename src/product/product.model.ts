@@ -9,7 +9,6 @@ export class ProductCharacteristics {
   value: string;
 }
 
-export interface ProductModel extends Base {};
 export class ProductModel extends TimeStamps {
   @prop()
   image: string;

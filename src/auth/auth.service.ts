@@ -1,27 +1,38 @@
-import { Injectable } from '@nestjs/common';
-import { AuthDto } from './dto/auth.dto';
-import { InjectModel } from '@m8a/nestjs-typegoose';
-import { ReturnModelType } from '@typegoose/typegoose';
-import { UserModel } from './user.model';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { UserModel } from '../user/user.model';
 import * as bcrypt from 'bcrypt';
+import { BAD_CREDENTIALS_ERROR } from './auth.constants';
+import { UserService } from '../user/user.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(UserModel) private readonly userModel: ReturnModelType<typeof UserModel>
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService
   ) {}
 
-  async createUser(authDto: AuthDto) {
-    const salt = await bcrypt.genSalt(10);
-    const newUser = new this.userModel({
-      email: authDto.login,
-      passwordHash: await bcrypt.hash(authDto.password, salt)
-    });
+  async validateUser(email: string, password: string): Promise<Pick<UserModel, 'email'>> {
+    const user = await this.userService.findUser(email);
 
-    return newUser.save();
+    if (!user) {
+      throw new UnauthorizedException(BAD_CREDENTIALS_ERROR);
+    }
+
+    const isCorrectPassword = await bcrypt.compare(password, user.passwordHash);
+
+    if (!isCorrectPassword) {
+      throw new UnauthorizedException(BAD_CREDENTIALS_ERROR);
+    }
+
+    return { email: user.email };
   }
 
-  findUser(email: string) {
-    return this.userModel.findOne({ email }).exec();
+  async login(email: string) {
+    const payload = { email };
+
+    return {
+      access_token: await this.jwtService.signAsync(payload)
+    }
   }
 }
