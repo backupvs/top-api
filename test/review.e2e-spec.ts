@@ -22,7 +22,7 @@ const mockCreateReviewDto: CreateReviewDto = {
   productId
 }
 
-describe('AppController (e2e)', () => {
+describe('ReviewController (e2e)', () => {
   let app: INestApplication;
   let createdId: string;
   let token: string;
@@ -74,7 +74,6 @@ describe('AppController (e2e)', () => {
       .get(`/review/byProduct/${new Types.ObjectId().toHexString()}`)
       .expect(200)
       .then(({ body }: request.Response) => {
-        console.dir({ body });
         expect(body.length).toBe(0);
       });
   });
