@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   NotFoundException,
   Param,
   Post,
@@ -27,6 +28,7 @@ export class ReviewController {
     return this.reviewService.create(createReviewDto);
   }
 
+  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string) {

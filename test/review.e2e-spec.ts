@@ -82,7 +82,7 @@ describe('ReviewController (e2e)', () => {
     return request(app.getHttpServer())
       .delete(`/review/${createdId}`)
       .set('Authorization', `Bearer ${token}`)
-      .expect(200);
+      .expect(204);
   });
 
   it('/review/:id (DELETE) - fail', () => {
