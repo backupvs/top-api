@@ -34,14 +34,14 @@ export class TopPageService {
   }
 
   find(findTopPageDto: FindTopPageDto) {
-    return this.topPageModel.find(
-      { ...findTopPageDto },
-      {
-        alias: 1,
-        secondCategory: 1,
-        title: 1
-      }
-    ).exec();
+    return this.topPageModel
+      .aggregate()
+      .match({ ...findTopPageDto })
+      .group({
+        _id: { secondCategory: "$secondCategory" },
+        pages: { $push: { alias: '$alias', title: '$title' } }
+      })
+      .exec();
   }
 
   updateById(id: string, updateTopPageDto: UpdateTopPageDto) {
