@@ -6,6 +6,7 @@ import { CreateReviewDto } from '../src/review/dto/create-review.dto';
 import { Types, disconnect } from 'mongoose';
 import { REVIEW_NOT_FOUND } from '../src/review/review.constants';
 import { AuthDto } from '../src/auth/dto/auth.dto';
+import { mainConfig } from '../src/configs/main.config';
 
 const productId = new Types.ObjectId().toHexString();
 
@@ -33,6 +34,7 @@ describe('ReviewController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    mainConfig(app);
     await app.init();
 
     const { body } = await request(app.getHttpServer())
@@ -56,7 +58,7 @@ describe('ReviewController (e2e)', () => {
   it('/review (POST) - fail', async () => {
     return request(app.getHttpServer())
       .post('/review')
-      .send({ ...mockCreateReviewDto, rating: 0 })
+      .send({ ...mockCreateReviewDto, rating: 20 })
       .expect(400)
   });
 

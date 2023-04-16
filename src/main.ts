@@ -1,24 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { mainConfig } from './configs/main.config';
 
 async function bootstrap() {
   const port = process.env.PORT || 3000;
   const app = await NestFactory.create(AppModule);
-
   app.setGlobalPrefix('api');
-
-  // Global pipes
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-      forbidNonWhitelisted: true,
-      transformOptions: {
-        enableImplicitConversion: true
-      }
-    })
-  );
+  mainConfig(app);
 
   await app.listen(port);
   console.log(`Listening on ${port}`);
