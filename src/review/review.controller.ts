@@ -7,9 +7,7 @@ import {
   NotFoundException,
   Param,
   Post,
-  UseGuards,
-  UsePipes,
-  ValidationPipe
+  UseGuards
 } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewService } from './review.service';
@@ -23,7 +21,6 @@ export class ReviewController {
     private readonly reviewService: ReviewService
   ) {}
 
-  @UsePipes(new ValidationPipe())
   @Post()
   create(@Body() createReviewDto: CreateReviewDto) {
     return this.reviewService.create(createReviewDto);
