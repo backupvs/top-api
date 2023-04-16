@@ -6,7 +6,7 @@ import { UpdateTopPageDto } from './dto/update-top-page.dto';
 @Controller('top-page')
 export class TopPageController {
 
-  @Post('create')
+  @Post()
   async create(@Body() createTopPageDto: CreateTopPageDto) {
 
   }
