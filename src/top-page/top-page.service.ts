@@ -24,6 +24,15 @@ export class TopPageService {
     return this.topPageModel.findOne({ alias }).exec();
   }
 
+  findByText(text: string) {
+    return this.topPageModel.findOne({
+      $text: {
+        $search: text,
+        $caseSensitive: false
+      }
+    }).exec();
+  }
+
   find(findTopPageDto: FindTopPageDto) {
     return this.topPageModel.find(
       { ...findTopPageDto },
