@@ -2,16 +2,39 @@ version: '3'
 
 services:
   mongo:
+    restart: always
     image: mongo:latest
     container_name: mongo
-    restart: always
     env_file:
       - mongo.env
     ports:
       - 27017:27017
     volumes:
       - mongo-data:/data/db
-    command: --wiredTigerCacheSizeGB 0.3
+    networks:
+      - top-api-dev-network
+
+  top-api-dev:
+    restart: always
+    image: top-api:dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - development.env
+    networks:
+      - top-api-dev-network
+
+networks:
+  top-api-dev-network:
+    name: top-api-dev-network
+    driver: bridge
 
 volumes:
   mongo-data:
