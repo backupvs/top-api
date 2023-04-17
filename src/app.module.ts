@@ -10,7 +10,9 @@ import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: process.env.NODE_ENV === 'production' ? 'production.env' : 'development.env'
+    }),
     TypegooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
